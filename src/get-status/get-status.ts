@@ -41,11 +41,13 @@ export async function getStatus({
     }
   }
 
-  const allChecksCompleted = previousCheckRuns.every(checkRun => {
-    return checkRun.status === 'completed'
+    const allChecksCompleted = previousCheckRuns.every(checkRun => {
+        core.debug(`Check Run: {checkRun.status}, {checkRun.name}`);
+        return checkRun.status === 'completed'
   })
 
-  const allChecksPassed = previousCheckRuns.every(checkRun => {
+    const allChecksPassed = previousCheckRuns.every(checkRun => {
+        core.debug(`Check Run: {checkRun.conclusion}, {checkRun.name}`);
     return (
       checkRun.conclusion === 'success' ||
       checkRun.conclusion === 'neutral' ||
