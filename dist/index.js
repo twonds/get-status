@@ -241,7 +241,10 @@ function getStatus({ ref, token, ignore = [] }) {
         core.info(`Ignored checks: ${ignoredCheckRunNames.join(', ')}`);
         core.debug(`Check Runs: ${JSON.stringify(checkRuns)}`);
         core.debug(`Context: ${JSON.stringify(github_1.context)}`);
-        const previousCheckRuns = checkRuns.filter(checkRun => !ignoredCheckRunNames.includes(checkRun.name));
+        const previousCheckRuns = checkRuns.filter(checkRun => {
+            core.debug(`Filter Check Run: ${checkRun.name} ${ignoredCheckRunNames.includes(checkRun.name)}`);
+            return !ignoredCheckRunNames.includes(checkRun.name);
+        });
         const hasNoOtherCheckRuns = !previousCheckRuns || previousCheckRuns.length === 0;
         if (hasNoOtherCheckRuns) {
             return {
@@ -250,11 +253,11 @@ function getStatus({ ref, token, ignore = [] }) {
             };
         }
         const allChecksCompleted = previousCheckRuns.every(checkRun => {
-            core.debug(`Check Run: ${checkRun.status}, ${checkRun.name}`);
+            core.debug(`Check Run Completed: ${checkRun.status}, ${checkRun.name}`);
             return checkRun.status === 'completed';
         });
         const allChecksPassed = previousCheckRuns.every(checkRun => {
-            core.debug(`Check Run: ${checkRun.conclusion}, ${checkRun.name}`);
+            core.debug(`Check Run Passes: ${checkRun.conclusion}, ${checkRun.name}`);
             return (checkRun.conclusion === 'success' ||
                 checkRun.conclusion === 'neutral' ||
                 checkRun.conclusion === 'skipped');

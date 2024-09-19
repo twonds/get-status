@@ -28,7 +28,10 @@ export async function getStatus({
   core.debug(`Context: ${JSON.stringify(context)}`)
 
   const previousCheckRuns = checkRuns.filter(
-    checkRun => !ignoredCheckRunNames.includes(checkRun.name)
+      checkRun => {
+          core.debug(`Filter Check Run: ${checkRun.name} ${ignoredCheckRunNames.includes(checkRun.name)}`);
+          return !ignoredCheckRunNames.includes(checkRun.name)
+      }
   )
 
   const hasNoOtherCheckRuns =
@@ -42,12 +45,12 @@ export async function getStatus({
   }
 
     const allChecksCompleted = previousCheckRuns.every(checkRun => {
-        core.debug(`Check Run: ${checkRun.status}, ${checkRun.name}`);
+        core.debug(`Check Run Completed: ${checkRun.status}, ${checkRun.name}`);
         return checkRun.status === 'completed'
   })
 
     const allChecksPassed = previousCheckRuns.every(checkRun => {
-        core.debug(`Check Run: ${checkRun.conclusion}, ${checkRun.name}`);
+        core.debug(`Check Run Passes: ${checkRun.conclusion}, ${checkRun.name}`);
     return (
       checkRun.conclusion === 'success' ||
       checkRun.conclusion === 'neutral' ||
