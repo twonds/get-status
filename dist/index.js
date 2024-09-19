@@ -250,11 +250,11 @@ function getStatus({ ref, token, ignore = [] }) {
             };
         }
         const allChecksCompleted = previousCheckRuns.every(checkRun => {
-            core.debug(`Check Run: {checkRun.status}, {checkRun.name}`);
+            core.debug(`Check Run: ${checkRun.status}, ${checkRun.name}`);
             return checkRun.status === 'completed';
         });
         const allChecksPassed = previousCheckRuns.every(checkRun => {
-            core.debug(`Check Run: {checkRun.conclusion}, {checkRun.name}`);
+            core.debug(`Check Run: ${checkRun.conclusion}, ${checkRun.name}`);
             return (checkRun.conclusion === 'success' ||
                 checkRun.conclusion === 'neutral' ||
                 checkRun.conclusion === 'skipped');
